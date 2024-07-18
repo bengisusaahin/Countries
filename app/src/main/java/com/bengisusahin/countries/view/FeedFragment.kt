@@ -5,14 +5,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bengisusahin.countries.R
+import com.bengisusahin.countries.adapter.CountryAdapter
 import com.bengisusahin.countries.databinding.FragmentFeedBinding
+import com.bengisusahin.countries.viewmodel.FeedViewModel
 
 class FeedFragment : Fragment() {
 
     private var _binding: FragmentFeedBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
+
+    private lateinit var viewModel: FeedViewModel
+    // for empty list initialization in adapter we are using arrayListOf()
+    private val countryAdapter = CountryAdapter(arrayListOf())
+
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +47,21 @@ class FeedFragment : Fragment() {
             Navigation.findNavController(it).navigate(action)
         }*/
 
+        viewModel = ViewModelProvider(this@FeedFragment)[FeedViewModel::class.java]
+        viewModel.refreshData()
+
+        binding.rvCountryList.layoutManager = LinearLayoutManager(context)
+        binding.rvCountryList.adapter = countryAdapter
+
+    }
+
+    fun observeLiveData(){
+        viewModel.countries.observe(this , Observer { countries ->
+            countries?.let {
+                binding.rvCountryList.visibility = View.VISIBLE
+                countryAdapter.updateCountryList(countries)
+            }
+        })
     }
 
 }
