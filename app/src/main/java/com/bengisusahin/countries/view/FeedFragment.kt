@@ -53,15 +53,37 @@ class FeedFragment : Fragment() {
         binding.rvCountryList.layoutManager = LinearLayoutManager(context)
         binding.rvCountryList.adapter = countryAdapter
 
+        observeLiveData()
     }
 
     fun observeLiveData(){
-        viewModel.countries.observe(this , Observer { countries ->
+        viewModel.countries.observe(viewLifecycleOwner , Observer { countries ->
             countries?.let {
                 binding.rvCountryList.visibility = View.VISIBLE
                 countryAdapter.updateCountryList(countries)
             }
         })
-    }
 
+        viewModel.countryError.observe(viewLifecycleOwner, Observer { error ->
+            error?.let {
+                if(it){
+                    binding.tvCountryError.visibility = View.VISIBLE
+                }else{
+                    binding.tvCountryError.visibility = View.GONE
+                }
+            }
+        })
+
+        viewModel.countryLoading.observe(viewLifecycleOwner, Observer { loading ->
+            loading?.let {
+                if(it){
+                    binding.pbCountryLoading.visibility = View.VISIBLE
+                    binding.rvCountryList.visibility = View.GONE
+                    binding.tvCountryError.visibility = View.GONE
+                }else{
+                    binding.pbCountryLoading.visibility = View.GONE
+                }
+            }
+        })
+    }
 }
