@@ -4,10 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.bengisusahin.countries.R
 import com.bengisusahin.countries.databinding.ItemCountryBinding
 import com.bengisusahin.countries.model.Country
+import com.bengisusahin.countries.view.FeedFragmentDirections
 
 class CountryAdapter(val countryList: ArrayList<Country>) : RecyclerView.Adapter<CountryAdapter.CountryViewHolder>() {
     class CountryViewHolder(val binding: ItemCountryBinding) : RecyclerView.ViewHolder(binding.root){
@@ -27,6 +29,11 @@ class CountryAdapter(val countryList: ArrayList<Country>) : RecyclerView.Adapter
     override fun onBindViewHolder(holder: CountryViewHolder, position: Int) {
         holder.binding.tvCountryName.text = countryList[position].countryName
         holder.binding.tvCountryRegion.text = countryList[position].countryRegion
+
+        holder.binding.root.setOnClickListener {
+            val action = FeedFragmentDirections.actionFeedFragmentToCountryFragment()
+            Navigation.findNavController(it).navigate(action)
+        }
     }
 
     fun updateCountryList(newCountryList: List<Country>){
