@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.bengisusahin.countries.model.Country
 import com.bengisusahin.countries.service.CountryApiService
 import com.bengisusahin.countries.service.CountryDatabase
+import com.bengisusahin.util.CustomSharedPreferences
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -21,6 +22,7 @@ class FeedViewModel(application: Application) : BaseViewModel(application) {
     // to avoid memory leaks
     // retrofit uses disposable objects
     private val disposable = CompositeDisposable()
+    private var customPreferences = CustomSharedPreferences(getApplication())
 
     val countries = MutableLiveData<List<Country>>()
     val countryError = MutableLiveData<Boolean>()
@@ -72,6 +74,7 @@ class FeedViewModel(application: Application) : BaseViewModel(application) {
             }
             showCountries(countryList)
         }
+        customPreferences.saveTime(System.nanoTime())
     }
 
 }
