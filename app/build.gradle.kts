@@ -49,6 +49,7 @@ dependencies {
     val supportVersion = "28.0.0"
     val retrofitVersion = "2.9.0"
     val glideVersion = "4.15.0"
+    val rxJavaVersion = "2.1.1"
     val room_version = "2.6.0"
     val navVersion = "2.7.4"
     val preferencesVersion = "1.2.1"
@@ -84,6 +85,9 @@ dependencies {
 
     //rxJava
     implementation("androidx.room:room-rxjava2:$room_version")
+
+    // reactive extensions
+    implementation("io.reactivex.rxjava2:rxandroid:$rxJavaVersion")
 
 
     //glide
