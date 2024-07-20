@@ -7,9 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bengisusahin.countries.R
 import com.bengisusahin.countries.adapter.CountryAdapter
 import com.bengisusahin.countries.databinding.FragmentFeedBinding
 import com.bengisusahin.countries.viewmodel.FeedViewModel
