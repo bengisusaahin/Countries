@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.bengisusahin.countries.R
 import com.bengisusahin.countries.databinding.FragmentCountryBinding
 import com.bengisusahin.countries.viewmodel.CountryViewModel
+import com.bengisusahin.util.downloadFromUrl
+import com.bengisusahin.util.placeHolderProgressBar
 
 class CountryFragment : Fragment() {
 
@@ -35,13 +37,12 @@ class CountryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this@CountryFragment)[CountryViewModel::class.java]
-        viewModel.getDataFromRoom()
-
-
         arguments?.let {
             countryUuid = CountryFragmentArgs.fromBundle(it).countryUuid
         }
+
+        viewModel = ViewModelProvider(this@CountryFragment)[CountryViewModel::class.java]
+        viewModel.getDataFromRoom(countryUuid)
 
         observeLiveData()
     }
@@ -54,6 +55,9 @@ class CountryFragment : Fragment() {
                 binding.tvCountryCapital.text = country.countryCapital
                 binding.tvCountryCurrency.text = country.countryCurrency
                 binding.tvCountryLanguage.text = country.countryLanguage
+                context?.let {
+                    binding.ivCountryImage.downloadFromUrl(country.imageUrl, placeHolderProgressBar(it))
+                }
             }
         })
     }
