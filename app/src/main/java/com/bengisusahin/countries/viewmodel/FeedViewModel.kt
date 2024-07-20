@@ -1,6 +1,7 @@
 package com.bengisusahin.countries.viewmodel
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.bengisusahin.countries.model.Country
@@ -23,13 +24,35 @@ class FeedViewModel(application: Application) : BaseViewModel(application) {
     // retrofit uses disposable objects
     private val disposable = CompositeDisposable()
     private var customPreferences = CustomSharedPreferences(getApplication())
+    // 10 minutes in nanoseconds
+    private var refreshTime = 10 * 60 * 1000 * 1000 * 1000L
 
     val countries = MutableLiveData<List<Country>>()
     val countryError = MutableLiveData<Boolean>()
     val countryLoading = MutableLiveData<Boolean>()
 
     fun refreshData(){
+        val updateTime = customPreferences.getTime()
+        // if the last update time is less than 10 minutes, do not update, use the data in the database
+        if(updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime){
+            getDataFromSQLite()
+        } else {
+            getDataFromAPI()
+        }
         getDataFromAPI()
+    }
+
+    fun refreshFromAPI(){
+        getDataFromAPI()
+    }
+
+    private fun getDataFromSQLite(){
+        countryLoading.value = true
+        launch {
+            val countries = CountryDatabase(getApplication()).countryDao().getAllCountries()
+            showCountries(countries)
+            Toast.makeText(getApplication(), "Countries from SQLite", Toast.LENGTH_LONG).show()
+        }
     }
 
     fun getDataFromAPI(){
@@ -45,6 +68,7 @@ class FeedViewModel(application: Application) : BaseViewModel(application) {
 //                        countryError.value = false
 //                        countryLoading.value = false
                         storeInSQLite(t)
+                        Toast.makeText(getApplication(), "Countries from API", Toast.LENGTH_LONG).show()
                     }
 
                     override fun onError(e: Throwable) {
