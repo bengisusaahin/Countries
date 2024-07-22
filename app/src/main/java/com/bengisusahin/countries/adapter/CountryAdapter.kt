@@ -13,7 +13,7 @@ import com.bengisusahin.countries.view.FeedFragmentDirections
 import com.bengisusahin.util.downloadFromUrl
 import com.bengisusahin.util.placeHolderProgressBar
 
-class CountryAdapter(val countryList: ArrayList<Country>) : RecyclerView.Adapter<CountryAdapter.CountryViewHolder>() {
+class CountryAdapter(val countryList: ArrayList<Country>) : RecyclerView.Adapter<CountryAdapter.CountryViewHolder>(), CountryClickListener{
     class CountryViewHolder(val binding: ItemCountryBinding) : RecyclerView.ViewHolder(binding.root){
 
     }
@@ -30,6 +30,7 @@ class CountryAdapter(val countryList: ArrayList<Country>) : RecyclerView.Adapter
 
     override fun onBindViewHolder(holder: CountryViewHolder, position: Int) {
         holder.binding.country = countryList[position]
+        holder.binding.listener = this
         /*
         holder.binding.tvCountryName.text = countryList[position].countryName
         holder.binding.tvCountryRegion.text = countryList[position].countryRegion
@@ -47,5 +48,10 @@ class CountryAdapter(val countryList: ArrayList<Country>) : RecyclerView.Adapter
         countryList.clear()
         countryList.addAll(newCountryList)
         notifyDataSetChanged()
+    }
+
+    override fun onCountryClicked(v: View, uuid: Int) {
+        val action = FeedFragmentDirections.actionFeedFragmentToCountryFragment(uuid)
+        Navigation.findNavController(v).navigate(action)
     }
 }

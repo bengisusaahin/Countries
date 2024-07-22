@@ -5,12 +5,24 @@
         <variable
             name="country"
             type="com.bengisusahin.countries.model.Country"/>
+        <variable
+            name="listener"
+            type="com.bengisusahin.countries.adapter.CountryClickListener" />
     </data>
 
     <LinearLayout
+        android:id="@+id/llCountryItem"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:onClick="@{() -> listener.onCountryClicked(llCountryItem, country.uuid)}"
         android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvCountryUuid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@{String.valueOf(country.uuid)}"/>
 
         <ImageView
             android:id="@+id/iv"
