@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bengisusahin.countries.R
@@ -14,12 +15,13 @@ import com.bengisusahin.util.downloadFromUrl
 import com.bengisusahin.util.placeHolderProgressBar
 
 class CountryFragment : Fragment() {
-
-    private var _binding: FragmentCountryBinding? = null
-    private val binding get() = _binding!!
+//
+//    private var _binding: FragmentCountryBinding? = null
+//    private val binding get() = _binding!!
 
     private lateinit var viewModel: CountryViewModel
     private var countryUuid = 0
+    private lateinit var dataBinding: FragmentCountryBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -29,8 +31,8 @@ class CountryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentCountryBinding.inflate(inflater, container, false)
-        val view = binding.root
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_country, container, false)
+        val view = dataBinding.root
         return view
     }
 
@@ -50,14 +52,15 @@ class CountryFragment : Fragment() {
     private fun observeLiveData(){
         viewModel.countryLiveData.observe(viewLifecycleOwner, Observer { country ->
             country?.let {
-                binding.tvCountryName.text = country.countryName
-                binding.tvCountryRegion.text = country.countryRegion
-                binding.tvCountryCapital.text = country.countryCapital
-                binding.tvCountryCurrency.text = country.countryCurrency
-                binding.tvCountryLanguage.text = country.countryLanguage
-                context?.let {
-                    binding.ivCountryImage.downloadFromUrl(country.imageUrl, placeHolderProgressBar(it))
-                }
+//                binding.tvCountryName.text = country.countryName
+//                binding.tvCountryRegion.text = country.countryRegion
+//                binding.tvCountryCapital.text = country.countryCapital
+//                binding.tvCountryCurrency.text = country.countryCurrency
+//                binding.tvCountryLanguage.text = country.countryLanguage
+//                context?.let {
+//                    binding.ivCountryImage.downloadFromUrl(country.imageUrl, placeHolderProgressBar(it))
+//                }
+                dataBinding.selectedCountry = country
             }
         })
     }

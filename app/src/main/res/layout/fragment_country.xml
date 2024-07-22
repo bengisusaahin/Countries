@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="selectedCountry"
+            type="com.bengisusahin.countries.model.Country"/>
+    </data>
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:downloadUrl="@{selectedCountry.imageUrl}"
         android:paddingTop="10dp"
         android:scaleType="fitCenter"
         android:minHeight="200dp"/>
@@ -24,7 +31,7 @@
         android:layout_centerHorizontal="true"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:text="Name"/>
+        android:text="@{selectedCountry.countryName}"/>
 
     <TextView
         android:id="@+id/tvCountryCapital"
@@ -34,7 +41,7 @@
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:textSize="16sp"
-        android:text="Capital"/>
+        android:text="@{selectedCountry.countryCapital}"/>
 
     <TextView
         android:id="@+id/tvCountryRegion"
@@ -44,7 +51,7 @@
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:textSize="16sp"
-        android:text="Region"/>
+        android:text="@{selectedCountry.countryRegion}"/>
 
     <TextView
         android:id="@+id/tvCountryCurrency"
@@ -54,7 +61,7 @@
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:textSize="16sp"
-        android:text="Currency"/>
+        android:text="@{selectedCountry.countryCurrency}"/>
 
     <TextView
         android:id="@+id/tvCountryLanguage"
@@ -64,7 +71,7 @@
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:textSize="16sp"
-        android:text="Language"/>
+        android:text="@{selectedCountry.countryLanguage}"/>
 
 </RelativeLayout>
 </layout>
